@@ -1,0 +1,7 @@
+- algoritme gebruiken voor fitten dendogram - R
+- Formats voor structuren - R
+- Implementaties verzamelen
+- 10 echte netwerken zoeken die we kunnen gebruiken voor HRG fitten - R
+- Functie voor samplen van HRG
+- Beginnen met Girvan-Newman kunnen gebruiken
+- Input allemaal in dezelfde format krijgen
