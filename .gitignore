@@ -1,1 +1,5 @@
 data
+.claude
+__pycache__
+algorithms/__pycache__
+pictures

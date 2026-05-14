@@ -1,67 +1,105 @@
+### THIS SHOULD BECOME A CLASS IMPLEMENTING THE SUPERALGORITHM, RETURNING A DENDROGRAM
+
+
 import igraph as ig
 import networkx
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram
 
-# g_networkx = networkx.gnm_random_graph(500, 800)
 
-g = ig.Graph.Erdos_Renyi(n=500, m=800).clusters().giant()
+def run(g: ig.Graph) -> list[tuple[int, int]]:
+    """
+    Run Girvan-Newman on g and return agglomerative merges compatible with HMI.
 
-# g = ig.Graph(n=g_networkx.number_of_nodes(), edges=list(g_networkx.edges()))
+    Returns a list of (a, b) pairs where leaf node IDs are 0..n-1 and
+    internal node k is produced by merge index k - n.
+    """
+    n = g.vcount()
+    clusters = g.community_edge_betweenness()
+    merges_list = [(int(a), int(b)) for a, b in clusters.merges]
 
-clusters = g.community_edge_betweenness()
-communities = clusters.as_clustering()
+    # igraph's merges may not be in topological order, so sort them
+    available = set(range(n))
+    remaining = list(range(len(merges_list)))
+    new_order = []
 
-print(communities)
+    while remaining:
+        for i, old_step in enumerate(remaining):
+            a, b = merges_list[old_step]
+            if a in available and b in available:
+                new_order.append(old_step)
+                available.discard(a)
+                available.discard(b)
+                available.add(n + old_step)
+                remaining.pop(i)
+                break
 
-# Build scipy linkage matrix from igraph merges.
-# igraph's merges may not be in topological order (parent before children),
-# so we sort them first: a merge can only run once both its inputs exist.
-n = g.vcount()
-merges_list = [(int(a), int(b)) for a, b in clusters.merges]
+    old_to_new_step = {old: new for new, old in enumerate(new_order)}
 
-print(merges_list)
-exit(0)
+    def remap(idx):
+        return idx if idx < n else n + old_to_new_step[idx - n]
+
+    merges = []
+    for new_step, old_step in enumerate(new_order):
+        a = remap(merges_list[old_step][0])
+        b = remap(merges_list[old_step][1])
+        merges.append((a, b))
+
+    return merges
 
 
+if __name__ == "__main__":
+    # g_networkx = networkx.gnm_random_graph(500, 800)
+    # g = ig.Graph.Erdos_Renyi(n=500, m=800).clusters().giant()
+    g = ig.Graph.Famous("Zachary")
+    # g = ig.Graph(n=g_networkx.number_of_nodes(), edges=list(g_networkx.edges()))
 
-available = set(range(n))
-remaining = list(range(len(merges_list)))
-new_order = []
+    clusters = g.community_edge_betweenness()
+    communities = clusters.as_clustering()
+    print(communities)
 
-while remaining:
-    for i, old_step in enumerate(remaining):
-        a, b = merges_list[old_step]
-        if a in available and b in available:
-            new_order.append(old_step)
-            available.discard(a)
-            available.discard(b)
-            available.add(n + old_step)  # keep old IDs so future lookups match
-            remaining.pop(i)
-            break
+    n = g.vcount()
+    merges_list = [(int(a), int(b)) for a, b in clusters.merges]
+    print(merges_list)
 
-old_to_new_step = {old: new for new, old in enumerate(new_order)}
+    available = set(range(n))
+    remaining = list(range(len(merges_list)))
+    new_order = []
 
-def remap(idx):
-    return idx if idx < n else n + old_to_new_step[idx - n]
+    while remaining:
+        for i, old_step in enumerate(remaining):
+            a, b = merges_list[old_step]
+            if a in available and b in available:
+                new_order.append(old_step)
+                available.discard(a)
+                available.discard(b)
+                available.add(n + old_step)
+                remaining.pop(i)
+                break
 
-sizes = {i: 1 for i in range(n)}
-linkage_matrix = []
+    old_to_new_step = {old: new for new, old in enumerate(new_order)}
 
-for new_step, old_step in enumerate(new_order):
-    a = remap(merges_list[old_step][0])
-    b = remap(merges_list[old_step][1])
-    size = sizes[a] + sizes[b]
-    linkage_matrix.append([a, b, new_step + 1, size])
-    sizes[n + new_step] = size
+    def remap(idx):
+        return idx if idx < n else n + old_to_new_step[idx - n]
 
-linkage_matrix = np.array(linkage_matrix, dtype=float)
+    sizes = {i: 1 for i in range(n)}
+    linkage_matrix = []
 
-plt.figure(figsize=(14, 6))
-dendrogram(linkage_matrix, no_labels=True)
-plt.title("Girvan-Newman dendrogram")
-plt.xlabel("nodes")
-plt.ylabel("merge step")
-plt.tight_layout()
-plt.show()
+    for new_step, old_step in enumerate(new_order):
+        a = remap(merges_list[old_step][0])
+        b = remap(merges_list[old_step][1])
+        size = sizes[a] + sizes[b]
+        linkage_matrix.append([a, b, new_step + 1, size])
+        sizes[n + new_step] = size
+
+    linkage_matrix = np.array(linkage_matrix, dtype=float)
+
+    fig3, ax3 = plt.subplots(figsize=(14, 6))
+    n_nodes = g.vcount()
+    dendrogram(linkage_matrix, ax=ax3, labels=list(range(n_nodes)))
+    plt.title("Girvan-Newman dendrogram")
+    plt.xlabel("nodes")
+    plt.ylabel("merge step")
+    plt.tight_layout()
+    plt.show()
