@@ -32,14 +32,25 @@ def assign_probs_topdown(
 
     children = dendrogram.children(node)
 
-    for child in children:
-        if dendrogram.is_dendrogram_node(child):
-            index = assign_probs_topdown(
-                dendrogram,
-                probs,
-                child,
-                index
-            )
+    left_first = rnd.choice([True, False])
+    first_child = dendrogram.nodes[node]["left"] if left_first else dendrogram.nodes[node]["right"]
+    second_child = dendrogram.nodes[node]["left"] if not left_first else dendrogram.nodes[node]["right"]
+
+    if dendrogram.is_dendrogram_node(first_child):
+        index = assign_probs_topdown(
+            dendrogram,
+            probs,
+            first_child,
+            index
+        )
+
+    if dendrogram.is_dendrogram_node(second_child):
+        index = assign_probs_topdown(
+            dendrogram,
+            probs,
+            second_child,
+            index
+        )
 
     return index
 
