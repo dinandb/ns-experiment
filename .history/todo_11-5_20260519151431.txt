@@ -8,4 +8,4 @@
 
 superalgoritme implementeren. mergeslist -> dendrogram
 
-we willen nHMI gebruiken (misschien agglomorative en divisive apart), en dan ook modularity (optimize voor modularity). hopelijk komt nHMI scores ietwat overeen met de beste modularity
+we willen nHMI gebruiken (misschien agglomorative en divisive apart), en dan ook modularity

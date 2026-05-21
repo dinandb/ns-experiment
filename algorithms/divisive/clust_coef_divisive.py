@@ -1,14 +1,20 @@
-### THIS SHOULD BECOME A CLASS IMPLEMENTING THE SUPERALGORITHM, RETURNING A DENDROGRAM
-
-
 import igraph as ig
 import heapq
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.cluster.hierarchy import dendrogram
+from superalgorithm import SuperAlgorithm
 
 
-def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
+class ClusteringCoefficientDivisive(SuperAlgorithm):
+    """Clustering coefficient divisive community detection algorithm."""
+
+    def run(self, g_orig: ig.Graph) -> list[tuple[int, int]]:
+        """Run clustering coefficient divisive and return agglomerative merges compatible with HMI."""
+        return _run_clustering_coefficient_divisive(g_orig)
+
+
+def _run_clustering_coefficient_divisive(g_orig: ig.Graph) -> list[tuple[int, int]]:
     """
     Run the clustering-coefficient divisive algorithm on g_orig and return
     agglomerative merges compatible with HMI.
@@ -20,14 +26,30 @@ def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
     n_nodes = g.vcount()
 
     node_cc = g.transitivity_local_undirected(mode="zero")
+    node_deg = list(g.degree())
+    # T(v) = CC(v) * d(v) * (d(v)-1) / 2  — recover integer triangle counts from CC
+    node_tri = [
+        int(round(node_cc[v] * node_deg[v] * (node_deg[v] - 1) / 2))
+        if node_deg[v] >= 2 else 0
+        for v in range(n_nodes)
+    ]
+
+    def _cc(tri, deg):
+        return 2.0 * tri / (deg * (deg - 1)) if deg >= 2 else 0.0
 
     def score(u, v):
+        # Analytically compute sum of CC deltas for {u,v} ∪ common if (u,v) were removed.
+        # No graph mutations, no igraph calls — purely O(degree).
         common = set(g.neighbors(u)) & set(g.neighbors(v))
-        affected = list({u, v} | common)
-        g.delete_edges([(u, v)])
-        cc_after = g.transitivity_local_undirected(vertices=affected, mode="zero")
-        g.add_edge(u, v)
-        return sum(cc_after[i] - node_cc[w] for i, w in enumerate(affected))
+        k = len(common)
+        delta = 0.0
+        # Each common neighbor w loses 1 triangle; degree unchanged
+        for w in common:
+            delta -= 2.0 / (node_deg[w] * (node_deg[w] - 1)) if node_deg[w] >= 2 else 0.0
+        # u and v each lose k triangles and 1 degree
+        delta += _cc(node_tri[u] - k, node_deg[u] - 1) - node_cc[u]
+        delta += _cc(node_tri[v] - k, node_deg[v] - 1) - node_cc[v]
+        return delta
 
     ver = {}
     heap = []
@@ -70,9 +92,13 @@ def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
             comp_nodes[cid_b] = comp_nodes[old_cid] - comp_nodes[cid_a]
             del comp_nodes[old_cid]
 
-        new_cc = g.transitivity_local_undirected(vertices=list(affected), mode="zero")
-        for i, w in enumerate(affected):
-            node_cc[w] = new_cc[i]
+        # Update triangle counts, degrees and CC analytically after actual removal
+        k = len(common)
+        for w in common:
+            node_tri[w] -= 1
+            node_cc[w] = _cc(node_tri[w], node_deg[w])
+        node_tri[u] -= k; node_deg[u] -= 1; node_cc[u] = _cc(node_tri[u], node_deg[u])
+        node_tri[v] -= k; node_deg[v] -= 1; node_cc[v] = _cc(node_tri[v], node_deg[v])
 
         for e2 in stale:
             if e2 in ver:
@@ -106,6 +132,12 @@ def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
         gn_cur += 1
 
     return gn_merges
+
+
+def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
+    """Run clustering coefficient divisive algorithm. Wrapper for backward compatibility."""
+    algo = ClusteringCoefficientDivisive()
+    return algo.run(g_orig)
 
 
 if __name__ == "__main__":

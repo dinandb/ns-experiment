@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import igraph as ig
 from HMI import nhmi
+from algorithms.divisive.girvan_newman import GirvanNewman
+from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
 
 
 class SuperAlgorithm(ABC):
@@ -30,11 +32,7 @@ class CombinedAlgorithm(SuperAlgorithm):
             algorithms: list of SuperAlgorithm instances.
                        Defaults to [GirvanNewman(), ClusteringCoefficientDivisive()]
         """
-        if algorithms is None:
-            from algorithms.divisive.girvan_newman import GirvanNewman
-            from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
-            algorithms = [GirvanNewman(), ClusteringCoefficientDivisive()]
-        self.algorithms = algorithms
+        self.algorithms = algorithms or [GirvanNewman(), ClusteringCoefficientDivisive()]
 
     def run(self, g: ig.Graph) -> list[tuple[int, int]]:
         """Run all algorithms and return the merge list with highest average nHMI to others."""

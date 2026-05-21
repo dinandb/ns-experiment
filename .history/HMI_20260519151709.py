@@ -134,6 +134,8 @@ def hmi(n_nodes, merges1, merges2, verbose=False):
     """
     children1, leaves1 = build_tree(n_nodes, merges1)
     children2, leaves2 = build_tree(n_nodes, merges2)
+
+
     root1 = n_nodes + len(merges1) - 1
     root2 = n_nodes + len(merges2) - 1
 

@@ -1,14 +1,20 @@
-### THIS SHOULD BECOME A CLASS IMPLEMENTING THE SUPERALGORITHM, RETURNING A DENDROGRAM
-
-
 import igraph as ig
 import networkx
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram
+from superalgorithm import SuperAlgorithm
 
 
-def run(g: ig.Graph) -> list[tuple[int, int]]:
+class GirvanNewman(SuperAlgorithm):
+    """Girvan-Newman community detection algorithm."""
+
+    def run(self, g: ig.Graph) -> list[tuple[int, int]]:
+        """Run Girvan-Newman and return agglomerative merges compatible with HMI."""
+        return _run_girvan_newman(g)
+
+
+def _run_girvan_newman(g: ig.Graph) -> list[tuple[int, int]]:
     """
     Run Girvan-Newman on g and return agglomerative merges compatible with HMI.
 
@@ -47,6 +53,12 @@ def run(g: ig.Graph) -> list[tuple[int, int]]:
         merges.append((a, b))
 
     return merges
+
+
+def run(g: ig.Graph) -> list[tuple[int, int]]:
+    """Run Girvan-Newman algorithm. Wrapper for backward compatibility."""
+    algo = GirvanNewman()
+    return algo.run(g)
 
 
 if __name__ == "__main__":

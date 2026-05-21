@@ -1,7 +1,7 @@
 import igraph as ig
 
-from algorithms.divisive.girvan_newman import run as gn_run
-from algorithms.divisive.clust_coef_divisive import run as cc_run
+from algorithms.girvan_newman import run as gn_run
+from algorithms.clust_coef_divisive import run as cc_run
 from HMI import hmi, nhmi
 
 

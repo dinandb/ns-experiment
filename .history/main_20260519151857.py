@@ -1,36 +1,8 @@
 import igraph as ig
 
-from algorithms.divisive.girvan_newman import run as gn_run
-from algorithms.divisive.clust_coef_divisive import run as cc_run
+from algorithms.girvan_newman import run as gn_run
+from algorithms.clust_coef_divisive import run as cc_run
 from HMI import hmi, nhmi
-
-
-def dendrogram_to_merges(dendrogram) -> list[tuple[int, int]]:
-    """Convert a pyhrg Dendrogram to an agglomerative merges list for nhmi.
-
-    Post-order traversal ensures children are assigned IDs before their parent.
-    Merge k (0-based) produces internal node n+k, matching HMI's convention.
-    """
-    leaf_nodes = [v for v in dendrogram.nodes() if not dendrogram.is_dendrogram_node(v)]
-    n = len(leaf_nodes)
-
-    dnode_to_merge_idx = {}
-    merges = []
-
-    def postorder(node):
-        left = dendrogram.nodes[node]["left"]
-        right = dendrogram.nodes[node]["right"]
-        if dendrogram.is_dendrogram_node(left):
-            postorder(left)
-        if dendrogram.is_dendrogram_node(right):
-            postorder(right)
-        a = left if not dendrogram.is_dendrogram_node(left) else n + dnode_to_merge_idx[left]
-        b = right if not dendrogram.is_dendrogram_node(right) else n + dnode_to_merge_idx[right]
-        merges.append((a, b))
-        dnode_to_merge_idx[node] = len(merges) - 1
-
-    postorder("_D0")
-    return merges
 
 # Simple 8-node graph with clear two-level hierarchical structure:
 #
@@ -66,8 +38,11 @@ merges_cc = cc_run(g)
 score = nhmi(g.vcount(), merges_gn, merges_cc, verbose=False)
 print(f"\nnHMI = {score:.6f}")
 import dendogram_generator
-rnd_dendrogram = dendogram_generator.make_rnd_dendrogram(8)
-merges_rnd = dendrogram_to_merges(rnd_dendrogram)
-print(f"\n=== Random dendrogram merges ===\nmerges: {merges_rnd}")
+print(dendogram_generator.make_rnd_dendrogram(10))
 
-score_rnd = nhmi(8, merges_gn, merges_rnd, verbose=False)
+
+# we hebben een dendrogram -> merge list nodig.
+
+# dan kunnen we de hmi van resultaat met ground truth vergelijken, want hmi neemt nu een merge list.
+
+# maar beter zou zijn als de hmi gewoon een dendrogram neemt, dan hebben we juist een merge list (output algoritme) -> dendrogram function nodig.
