@@ -55,6 +55,47 @@ def assign_probs_topdown(
     return index
 
 
+def assign_probs_by_level(
+    dendrogram: Dendrogram,
+    probs: list[float],
+    root="_D0"
+) -> None:
+    """
+    Assign probabilities grouped by level (distance from root).
+
+    Nodes at the same distance from `root` get probabilities drawn
+    randomly from `probs` (without replacement) per level.
+    """
+    from collections import deque, defaultdict
+
+    # gather dendrogram nodes per level using BFS
+    levels = defaultdict(list)
+    q = deque()
+    q.append((root, 0))
+    visited = {root}
+    while q:
+        node, lvl = q.popleft()
+        if dendrogram.is_dendrogram_node(node):
+            levels[lvl].append(node)
+        for child in dendrogram.children(node):
+            if child not in visited:
+                visited.add(child)
+                q.append((child, lvl + 1))
+
+    # assign probabilities per level
+    idx = 0
+    for lvl in sorted(levels.keys()):
+        nodes = levels[lvl]
+        k = len(nodes)
+        level_probs = probs[idx:idx + k]
+        idx += k
+        rnd.shuffle(nodes)
+        for node, p in zip(nodes, level_probs):
+            dendrogram.nodes[node]["p"] = p
+
+    return None
+
+
 def make_rnd_dendrogram(n: int) -> Dendrogram:
 
     # dummy graph with n vertices
@@ -73,7 +114,6 @@ def make_rnd_dendrogram(n: int) -> Dendrogram:
     probs = generate_probs(num_dnodes)
 
     # assign them respecting hierarchy
-    assign_probs_topdown(dendrogram, probs)
+    assign_probs_by_level(dendrogram, probs)
 
     return dendrogram
-
