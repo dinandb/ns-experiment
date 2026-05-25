@@ -2,6 +2,7 @@ import igraph as ig
 
 from algorithms.divisive.girvan_newman import run as gn_run
 from algorithms.divisive.clust_coef_divisive import run as cc_run
+from algorithms.agglomerative.linkage import run as ag_run
 from HMI import hmi, nhmi
 
 
@@ -63,10 +64,14 @@ print(f"merges: {merges_gn}\n")
 merges_cc = cc_run(g)
 # print(f"merges: {merges_cc}\n")
 
+print("=== Agglomerative Linkage ===")
+merges_ag = ag_run(g, 'average')
+print(f"merges: {merges_ag}\n")
+
 score = nhmi(g.vcount(), merges_gn, merges_cc, verbose=False)
 print(f"\nnHMI = {score:.6f}")
-import dendogram_generator
-rnd_dendrogram = dendogram_generator.make_rnd_dendrogram(8)
+import dendrogram_generator
+rnd_dendrogram = dendrogram_generator.make_rnd_dendrogram(8)
 merges_rnd = dendrogram_to_merges(rnd_dendrogram)
 print(f"\n=== Random dendrogram merges ===\nmerges: {merges_rnd}")
 

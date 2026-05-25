@@ -1,7 +1,7 @@
 import random
 import igraph as ig
 from pyhrg.hrg import Dendrogram
-import dendogram_generator
+import dendrogram_generator
 
 
 def _build_leaf_to_ancestors(dendrogram: Dendrogram) -> dict:
@@ -54,7 +54,7 @@ def dendrogram_to_graph(dendrogram: Dendrogram) -> ig.Graph:
                 edges.append((idx_i, idx_j))
 
     return ig.Graph(n=n, edges=edges)
-hoi = dendogram_generator.make_rnd_dendrogram(10)
+hoi = dendrogram_generator.make_rnd_dendrogram(10)
 print(f"dendrogram = {hoi},\ngraph = ")
 
 print(hoi.generate_graph())
