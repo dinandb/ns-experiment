@@ -2,6 +2,7 @@ import igraph as ig
 
 from algorithms.divisive.girvan_newman import run as gn_run
 from algorithms.divisive.clust_coef_divisive import run as cc_run
+from algorithms.agglomerative.linkage import run as ag_run
 from HMI import hmi, nhmi
 
 
@@ -62,6 +63,10 @@ print(f"merges: {merges_gn}\n")
 # print("=== CC-Divisive ===")
 merges_cc = cc_run(g)
 # print(f"merges: {merges_cc}\n")
+
+print("=== Agglomerative Linkage ===")
+merges_ag = ag_run(g, 'average')
+print(f"merges: {merges_ag}\n")
 
 score = nhmi(g.vcount(), merges_gn, merges_cc, verbose=False)
 print(f"\nnHMI = {score:.6f}")
