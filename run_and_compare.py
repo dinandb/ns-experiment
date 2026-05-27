@@ -8,10 +8,11 @@ from scipy.cluster.hierarchy import dendrogram as scipy_dendrogram, linkage as s
 from scipy.spatial.distance import squareform
 from HMI import nhmi
 from algorithms.divisive.girvan_newman import GirvanNewman
+from algorithms.divisive.fast_GN import FastGirvanNewman
 from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
 
 
-DIVISIVE_ALGORITHMS = [GirvanNewman(), ClusteringCoefficientDivisive()]
+DIVISIVE_ALGORITHMS = [GirvanNewman(), ClusteringCoefficientDivisive(), FastGirvanNewman()]
 AGGLOMERATIVE_ALGORITHMS = []
 ALL_ALGORITHMS = DIVISIVE_ALGORITHMS + AGGLOMERATIVE_ALGORITHMS
 
