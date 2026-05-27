@@ -33,7 +33,9 @@ class CombinedAlgorithm(SuperAlgorithm):
         if algorithms is None:
             from algorithms.divisive.girvan_newman import GirvanNewman
             from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
-            algorithms = [GirvanNewman(), ClusteringCoefficientDivisive()]
+            from algorithms.agglomerative.linkage import Linkage
+            from algorithms.agglomerative.cosine_similarity import CosineSimilarity
+            algorithms = [GirvanNewman(), ClusteringCoefficientDivisive(), Linkage(), CosineSimilarity()]
         self.algorithms = algorithms
 
     def run(self, g: ig.Graph) -> list[tuple[int, int]]:
