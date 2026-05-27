@@ -65,8 +65,8 @@ merges_cc = cc_run(g)
 
 score = nhmi(g.vcount(), merges_gn, merges_cc, verbose=False)
 print(f"\nnHMI = {score:.6f}")
-import dendogram_generator
-rnd_dendrogram = dendogram_generator.make_rnd_dendrogram(8)
+import dendrogram_generator
+rnd_dendrogram = dendrogram_generator.make_rnd_dendrogram(8)
 merges_rnd = dendrogram_to_merges(rnd_dendrogram)
 print(f"\n=== Random dendrogram merges ===\nmerges: {merges_rnd}")
 

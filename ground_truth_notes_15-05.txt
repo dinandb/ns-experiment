@@ -1,0 +1,7 @@
+HRG fitten werkt niet
+maar misschien nog proberen op echt netwerk
+
+goedpraten waarom dendrograms echt zijn
+misschien andere measure dan HMI
+
+D/J: door met algos, als R klaar is dan aan format matchen en prelim tests

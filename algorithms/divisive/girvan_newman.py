@@ -22,6 +22,7 @@ def _run_girvan_newman(g: ig.Graph) -> list[tuple[int, int]]:
     internal node k is produced by merge index k - n.
     """
     n = g.vcount()
+
     clusters = g.community_edge_betweenness()
     merges_list = [(int(a), int(b)) for a, b in clusters.merges]
 
