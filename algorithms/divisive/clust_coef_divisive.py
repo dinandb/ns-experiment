@@ -9,9 +9,9 @@ from superalgorithm import SuperAlgorithm
 class ClusteringCoefficientDivisive(SuperAlgorithm):
     """Clustering coefficient divisive community detection algorithm."""
 
-    def run(self, g_orig: ig.Graph) -> list[tuple[int, int]]:
+    def run(self, g: ig.Graph) -> list[tuple[int, int]]:
         """Run clustering coefficient divisive and return agglomerative merges compatible with HMI."""
-        return _run_clustering_coefficient_divisive(g_orig)
+        return _run_clustering_coefficient_divisive(g)
 
 
 def _run_clustering_coefficient_divisive(g_orig: ig.Graph) -> list[tuple[int, int]]:
@@ -143,9 +143,9 @@ def run(g_orig: ig.Graph) -> list[tuple[int, int]]:
 if __name__ == "__main__":
     g = ig.Graph.Famous("Zachary")
 
-    # fig, ax = plt.subplots()
-    # ig.plot(g, target=ax, vertex_label=list(range(g.vcount())), vertex_size=20)
-    # plt.show()
+    fig, ax = plt.subplots()
+    ig.plot(g, target=ax, vertex_label=list(range(1, g.vcount()+1)), vertex_size=20)
+    plt.show()
 
     node_cc = g.transitivity_local_undirected(mode="zero")
 
@@ -274,7 +274,7 @@ if __name__ == "__main__":
     linkage_matrix = np.array(linkage_rows, dtype=float)
 
     fig3, ax3 = plt.subplots(figsize=(14, 6))
-    dendrogram(linkage_matrix, ax=ax3, labels=list(range(n_nodes)))
+    dendrogram(linkage_matrix, ax=ax3, labels=list(range(1, n_nodes + 1)))
     ax3.set_title("CC-divisive dendrogram")
     ax3.set_xlabel("nodes")
     ax3.set_ylabel("split step (reversed)")

@@ -6,7 +6,7 @@ from scipy.cluster.hierarchy import dendrogram
 from superalgorithm import SuperAlgorithm
 
 
-class GirvanNewman(SuperAlgorithm):
+class FastGirvanNewman(SuperAlgorithm):
     """Girvan-Newman community detection algorithm."""
 
     def run(self, g: ig.Graph) -> list[tuple[int, int]]:
@@ -23,7 +23,13 @@ def _run_girvan_newman(g: ig.Graph) -> list[tuple[int, int]]:
     """
     n = g.vcount()
 
-    clusters = g.community_edge_betweenness()
+    # clusters = g.community_edge_betweenness()
+
+    # make clusters here
+    C = cluster_alg(g)
+
+
+
     merges_list = [(int(a), int(b)) for a, b in clusters.merges]
 
     # igraph's merges may not be in topological order, so sort them
@@ -55,10 +61,56 @@ def _run_girvan_newman(g: ig.Graph) -> list[tuple[int, int]]:
 
     return merges
 
+def _edge_betweenness(g: ig.Graph) -> list[float]:
+    # the edge betweenness of an edge e is defined as the number of adjacent edges to e
+    degrees = g.degree()
+    return [degrees[e.source] + degrees[e.target] - 2 for e in g.es]
+
+
+def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
+    """Fast Girvan-Newman: iteratively remove highest-betweenness edges
+    while modularity keeps improving. Returns merges list for dendrogram."""
+    g = g.copy()
+    n = g.vcount()
+
+    counter = g.ecount()
+    modularity_before = 0.0
+    modularity_after = g.modularity(g.components().membership)
+
+    splits = []  # (frozenset_part1, frozenset_part2) for each split caused by an edge removal
+
+    while counter > 0 and modularity_after > modularity_before:
+        eb = _edge_betweenness(g)
+        best = eb.index(max(eb))
+        u, v = g.es[best].source, g.es[best].target
+        g.delete_edges(best)
+
+        membership = g.components().membership
+        if membership[u] != membership[v]:  # edge removal caused a split
+            part1 = frozenset(i for i, m in enumerate(membership) if m == membership[u])
+            part2 = frozenset(i for i, m in enumerate(membership) if m == membership[v])
+            splits.append((part1, part2))
+
+        counter -= 1
+
+    # Build agglomerative merges by replaying splits in reverse
+    comp_to_id = {frozenset({i}): i for i in range(n)}
+    merges = []
+    internal_id = n
+
+    for part1, part2 in reversed(splits):
+        merges.append((comp_to_id[part1], comp_to_id[part2]))
+        comp_to_id[part1 | part2] = internal_id
+        internal_id += 1
+
+    return merges
+
+
+
 
 def run(g: ig.Graph) -> list[tuple[int, int]]:
     """Run Girvan-Newman algorithm. Wrapper for backward compatibility."""
-    algo = GirvanNewman()
+    algo = FastGirvanNewman()
     return algo.run(g)
 
 
