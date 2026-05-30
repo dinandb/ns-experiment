@@ -26,7 +26,6 @@ def _run_agglomerative(g: ig.Graph, linkage_algorithm: str) -> list[tuple[int, i
     """
 
     distances = np.array(g.distances())
-    
     finite_max = np.max(distances[np.isfinite(distances)])
     distances[distances == np.inf] = finite_max * 100
     D = linkage(distances, method=linkage_algorithm)
