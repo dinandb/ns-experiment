@@ -40,9 +40,8 @@ class SuperAlgorithm(ABC):
                     membership[node] = comm_id
 
             mod = g.modularity(membership)
-            print(f"modularity of clustering: \n{membership} had score {mod}")
+            print(f"modularity of clustering: \n")
             if mod > best_mod:
-                print("this gave a new best")
                 best_mod = mod
                 best_partition = [sorted(nodes) for nodes in clusters.values()]
 

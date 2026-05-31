@@ -87,7 +87,7 @@ def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
         
         u, v = g.es[best].source, g.es[best].target
         if __name__ == "__main__":
-            print(f"edge_with_maximal_betweenness = ({u+1,v+1}), with score = {max(eb)}")
+            print(f"edge_with_maximal_betweenness = ({u,v}), with score = {max(eb)}")
         g.delete_edges(best)
 
         membership = g.components().membership
@@ -95,8 +95,6 @@ def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
             part1 = frozenset(i for i, m in enumerate(membership) if m == membership[u])
             part2 = frozenset(i for i, m in enumerate(membership) if m == membership[v])
             splits.append((part1, part2))
-            if __name__ == "__main__":
-                print("^ caused a split")
 
         counter -= 1
 

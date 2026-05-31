@@ -2,7 +2,7 @@ import igraph as ig
 
 from algorithms.divisive.girvan_newman import run as gn_run
 from algorithms.divisive.clust_coef_divisive import run as cc_run
-# from algorithms.agglomerative.linkage import run as ag_run
+from algorithms.agglomerative.linkage import run as ag_run
 from superalgorithm import SuperAlgorithm
 from HMI import hmi, nhmi
 
@@ -60,10 +60,6 @@ g = ig.Graph(n=8, edges=edges)
 print("=== Girvan-Newman ===")
 merges_gn = gn_run(g)
 print(f"merges: {merges_gn}\n")
-
-res = SuperAlgorithm.optimize_for_modularity(g, merges_gn)
-
-print(f"result van opt for mod = {res}")
 
 # # print("=== CC-Divisive ===")
 # merges_cc = cc_run(g)

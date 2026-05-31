@@ -156,4 +156,4 @@ def run_and_compare(n_dendrograms: int, n_graphs_per_dendrogram: int, n_nodes: i
 
 
 if __name__ == "__main__":
-    run_and_compare(n_dendrograms=5, n_graphs_per_dendrogram=20, n_nodes=50)
+    run_and_compare(n_dendrograms=5, n_graphs_per_dendrogram=10, n_nodes=20)

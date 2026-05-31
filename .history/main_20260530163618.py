@@ -2,7 +2,7 @@ import igraph as ig
 
 from algorithms.divisive.girvan_newman import run as gn_run
 from algorithms.divisive.clust_coef_divisive import run as cc_run
-# from algorithms.agglomerative.linkage import run as ag_run
+from algorithms.agglomerative.linkage import run as ag_run
 from superalgorithm import SuperAlgorithm
 from HMI import hmi, nhmi
 

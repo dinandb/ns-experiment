@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-
 import igraph as ig
 import networkx
 import numpy as np
@@ -79,15 +75,10 @@ def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
 
     splits = []  # (frozenset_part1, frozenset_part2) for each split caused by an edge removal
 
-    while counter > 0: # and modularity_after > modularity_before:
+    while counter > 0 and modularity_after > modularity_before:
         eb = _edge_betweenness(g)
-        
-
         best = eb.index(max(eb))
-        
         u, v = g.es[best].source, g.es[best].target
-        if __name__ == "__main__":
-            print(f"edge_with_maximal_betweenness = ({u+1,v+1}), with score = {max(eb)}")
         g.delete_edges(best)
 
         membership = g.components().membership
@@ -95,8 +86,6 @@ def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
             part1 = frozenset(i for i, m in enumerate(membership) if m == membership[u])
             part2 = frozenset(i for i, m in enumerate(membership) if m == membership[v])
             splits.append((part1, part2))
-            if __name__ == "__main__":
-                print("^ caused a split")
 
         counter -= 1
 
@@ -132,28 +121,7 @@ if __name__ == "__main__":
     # print(communities)
 
     n = g.vcount()
-    merges_list = cluster_alg(g)
-    print(f"merges list = {merges_list}")
-    available = set(range(n))
-    remaining = list(range(len(merges_list)))
-    new_order = []
-
-    while remaining:
-        for i, old_step in enumerate(remaining):
-            a, b = merges_list[old_step]
-            if a in available and b in available:
-                new_order.append(old_step)
-                available.discard(a)
-                available.discard(b)
-                available.add(n + old_step)
-                remaining.pop(i)
-                break
-
-    old_to_new_step = {old: new for new, old in enumerate(new_order)}
-
-    def remap(idx):
-        return idx if idx < n else n + old_to_new_step[idx - n]
-
+    merges_list = 
     sizes = {i: 1 for i in range(n)}
     linkage_matrix = []
 
@@ -165,10 +133,10 @@ if __name__ == "__main__":
         sizes[n + new_step] = size
 
     linkage_matrix = np.array(linkage_matrix, dtype=float)
-    # exit(0)
+
     fig3, ax3 = plt.subplots(figsize=(14, 6))
     n_nodes = g.vcount()
-    dendrogram(linkage_matrix, ax=ax3, labels=list(range(1, n_nodes+1)))
+    dendrogram(linkage_matrix, ax=ax3, labels=list(range(n_nodes)))
     plt.title("Girvan-Newman dendrogram")
     plt.xlabel("nodes")
     plt.ylabel("merge step")

@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-
 import igraph as ig
 import heapq
 import matplotlib.pyplot as plt
