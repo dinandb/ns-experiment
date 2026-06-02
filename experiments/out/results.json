@@ -1,0 +1,407 @@
+[
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 10,
+    "nhmi_score": 0.1085153624244885,
+    "avg_modularity": 0.33621473749848085,
+    "time_s": 0.053422799974214286
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 20,
+    "nhmi_score": 0.37106163287502447,
+    "avg_modularity": 0.36502420807292857,
+    "time_s": 0.04481649998342618
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 50,
+    "nhmi_score": 0.4780175133855431,
+    "avg_modularity": 0.35610050122156894,
+    "time_s": 0.10644810000667349
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 10,
+    "nhmi_score": 0.10326250057338353,
+    "avg_modularity": 0.2940419275521541,
+    "time_s": 0.048493699985556304
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 20,
+    "nhmi_score": 0.18978771132906858,
+    "avg_modularity": 0.3421599216302032,
+    "time_s": 0.04082300001755357
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 50,
+    "nhmi_score": 0.5861287285975809,
+    "avg_modularity": 0.27788058761338164,
+    "time_s": 0.12089560000458732
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 10,
+    "nhmi_score": 0.06400287888412004,
+    "avg_modularity": 0.2649635498717392,
+    "time_s": 0.05730699998093769
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 20,
+    "nhmi_score": 0.15105225391803717,
+    "avg_modularity": 0.2775506749246194,
+    "time_s": 0.050794600043445826
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 50,
+    "nhmi_score": 0.11724858849384938,
+    "avg_modularity": 0.28667484884763444,
+    "time_s": 0.14314800000283867
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 10,
+    "nhmi_score": 0.06387349494927835,
+    "avg_modularity": 0.06404172774244339,
+    "time_s": 0.04174389998661354
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 20,
+    "nhmi_score": 0.12906976730358033,
+    "avg_modularity": 0.03814529350883578,
+    "time_s": 0.034012700023595244
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 50,
+    "nhmi_score": 0.07664431503915171,
+    "avg_modularity": 0.06609164605959279,
+    "time_s": 0.12801949999993667
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 10,
+    "nhmi_score": 0.11304718433665273,
+    "avg_modularity": 0.24348080355134888,
+    "time_s": 0.051462900009937584
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 20,
+    "nhmi_score": 0.1016886585457152,
+    "avg_modularity": 0.20155724440817155,
+    "time_s": 0.036586200003512204
+  },
+  {
+    "graph_size": 20,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 50,
+    "nhmi_score": 0.1016886585457152,
+    "avg_modularity": 0.1943639713915141,
+    "time_s": 0.10817169997608289
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 10,
+    "nhmi_score": 0.14003862340400097,
+    "avg_modularity": 0.3020672169772537,
+    "time_s": 0.33876889996463433
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 20,
+    "nhmi_score": 0.19812230744828063,
+    "avg_modularity": 0.33647122526587514,
+    "time_s": 0.3252568000461906
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 50,
+    "nhmi_score": 0.654343425535698,
+    "avg_modularity": 0.32295439611117155,
+    "time_s": 0.9912095000036061
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 10,
+    "nhmi_score": 0.12365887315733563,
+    "avg_modularity": 0.24600894470465917,
+    "time_s": 0.3301632000366226
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 20,
+    "nhmi_score": 0.1336870999403143,
+    "avg_modularity": 0.2293124767000061,
+    "time_s": 0.3228213000111282
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 50,
+    "nhmi_score": 0.23945526394046424,
+    "avg_modularity": 0.24335233292734973,
+    "time_s": 1.0254513999680057
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 10,
+    "nhmi_score": 0.14715638540223866,
+    "avg_modularity": 0.2694652734525773,
+    "time_s": 0.3688821000396274
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 20,
+    "nhmi_score": 0.2374017736070636,
+    "avg_modularity": 0.28452182117603897,
+    "time_s": 0.3561158000375144
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 50,
+    "nhmi_score": 0.10811633321543355,
+    "avg_modularity": 0.291813671242727,
+    "time_s": 1.1729658999829553
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 10,
+    "nhmi_score": 0.04630788950871355,
+    "avg_modularity": 0.17815857929396067,
+    "time_s": 0.2407480999827385
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 20,
+    "nhmi_score": 0.03654545967517297,
+    "avg_modularity": 0.1562954065039119,
+    "time_s": 0.244332599977497
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 50,
+    "nhmi_score": 0.04501612031990709,
+    "avg_modularity": 0.16660874508875712,
+    "time_s": 0.6560529000125825
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 10,
+    "nhmi_score": 0.07652139820744924,
+    "avg_modularity": 0.24528529185439485,
+    "time_s": 0.2817267999635078
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 20,
+    "nhmi_score": 0.0690872852392752,
+    "avg_modularity": 0.23982789975737884,
+    "time_s": 0.27413909998722374
+  },
+  {
+    "graph_size": 50,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 50,
+    "nhmi_score": 0.0690872852392752,
+    "avg_modularity": 0.23897560560701087,
+    "time_s": 0.8011656000162475
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 10,
+    "nhmi_score": 0.1690759560226401,
+    "avg_modularity": 0.3565323769800495,
+    "time_s": 4.764544199977536
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 20,
+    "nhmi_score": 0.18336308920949884,
+    "avg_modularity": 0.3628798718066575,
+    "time_s": 4.3849020000197925
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "GirvanNewman",
+    "n_graphs": 50,
+    "nhmi_score": 0.16588711237031553,
+    "avg_modularity": 0.3538521686770523,
+    "time_s": 14.832232599961571
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 10,
+    "nhmi_score": 0.18928326263892525,
+    "avg_modularity": 0.12845624336293032,
+    "time_s": 2.773464400030207
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 20,
+    "nhmi_score": 0.22868674493429553,
+    "avg_modularity": 0.13124085404715774,
+    "time_s": 2.76009029999841
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "EdgeDegreeCentrality",
+    "n_graphs": 50,
+    "nhmi_score": 0.2606496068054192,
+    "avg_modularity": 0.1357448610550012,
+    "time_s": 8.317179400008172
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 10,
+    "nhmi_score": 0.04594708785423918,
+    "avg_modularity": 0.2652081359424559,
+    "time_s": 2.695975599985104
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 20,
+    "nhmi_score": 0.19011742118905142,
+    "avg_modularity": 0.28433758266845716,
+    "time_s": 2.68018620001385
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "ClusteringCoefficientDivisive",
+    "n_graphs": 50,
+    "nhmi_score": 0.18567650833592675,
+    "avg_modularity": 0.26805407811806775,
+    "time_s": 8.242636800045148
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 10,
+    "nhmi_score": 0.013507015522658131,
+    "avg_modularity": 0.3123934357519218,
+    "time_s": 0.8212591999908909
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 20,
+    "nhmi_score": 0.012229818250218679,
+    "avg_modularity": 0.30993507214609173,
+    "time_s": 0.8682036999962293
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "CosineSimilarity",
+    "n_graphs": 50,
+    "nhmi_score": 0.16873645064693707,
+    "avg_modularity": 0.31316275989141934,
+    "time_s": 2.4876070000464097
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 10,
+    "nhmi_score": 0.014609740859854161,
+    "avg_modularity": 0.31688564855739276,
+    "time_s": 0.8506843000068329
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 20,
+    "nhmi_score": 0.023293824588601908,
+    "avg_modularity": 0.3283074324580785,
+    "time_s": 0.8717295000096783
+  },
+  {
+    "graph_size": 100,
+    "run": 0,
+    "algorithm": "Linkage",
+    "n_graphs": 50,
+    "nhmi_score": 0.014850474350120876,
+    "avg_modularity": 0.3188331934885088,
+    "time_s": 2.5334378000115976
+  }
+]

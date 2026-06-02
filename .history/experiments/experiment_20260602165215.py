@@ -104,8 +104,8 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     return nhmi_score, avg_modularity, coph_sum
 
 GRAPH_SIZES = [20, 50, 100]#, 500, 1000]
-N_RUNS = 1
-N_GRAPHS_LIST = [10, 20, 50]#, 100]
+N_RUNS = 3
+N_GRAPHS_LIST = [10, 20]#, 50, 100]
 ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')

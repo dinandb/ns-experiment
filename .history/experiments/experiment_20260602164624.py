@@ -73,7 +73,7 @@ def _merges_to_linkage(merges: list[tuple[int, int]], n: int) -> np.ndarray:
     return np.array(rows, dtype=float)
 
 
-def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_graphs: int, coph_sum, algorithm) -> tuple[float, float]:
+def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_graphs: int, coph_sumalgorithm) -> tuple[float, float]:
     """Run 'algorithm' on 'n_graphs' sampled graphs and compare the average dendrogram to the ground-truth dendrogram.
 
     Returns the nHMI score between the ground-truth merges and the algorithm's averaged dendrogram.
@@ -82,7 +82,6 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     M = dendrogram_to_merges(dend)
     if coph_sum is None:
         coph_sum = np.zeros((n_nodes, n_nodes))
-
     optimal_modularities = []
     for _ in range(additional_n_graphs):
         g_nx = dend.generate_graph()
@@ -101,11 +100,11 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     avg_M = [(int(row[0]), int(row[1])) for row in avg_lm]
     nhmi_score = nhmi(n_nodes, M, avg_M, verbose=False)
     avg_modularity = float(np.mean(optimal_modularities))
-    return nhmi_score, avg_modularity, coph_sum
+    return nhmi_score, avg_modularity
 
 GRAPH_SIZES = [20, 50, 100]#, 500, 1000]
-N_RUNS = 1
-N_GRAPHS_LIST = [10, 20, 50]#, 100]
+N_RUNS = 2
+N_GRAPHS_LIST = [10, 20]#, 50, 100]
 ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')
@@ -122,11 +121,9 @@ def run_experiment():
 
             for alg in ALGORITHMS:
                 alg_name = alg.__class__.__name__
-                cur_coph_sum = None
-                for i, n_graphs in enumerate(N_GRAPHS_LIST): # the number of sampled graphs from the HRG we give algorithm
-                    prev_n_graphs = N_GRAPHS_LIST[i-1] if i > 0 else 0
+                for n_graphs in N_GRAPHS_LIST: # the number of sampled graphs from the HRG we give algorithm
                     t0 = time.perf_counter()
-                    nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(graph_size, dend, n_graphs, n_graphs-prev_n_graphs, cur_coph_sum, alg)
+                    nhmi_score, avg_modularity = run_and_compare(graph_size, dend, n_graphs, alg)
                     elapsed = time.perf_counter() - t0
 
                     record = {

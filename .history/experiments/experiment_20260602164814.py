@@ -104,8 +104,8 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     return nhmi_score, avg_modularity, coph_sum
 
 GRAPH_SIZES = [20, 50, 100]#, 500, 1000]
-N_RUNS = 1
-N_GRAPHS_LIST = [10, 20, 50]#, 100]
+N_RUNS = 2
+N_GRAPHS_LIST = [10, 20]#, 50, 100]
 ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')
@@ -122,11 +122,10 @@ def run_experiment():
 
             for alg in ALGORITHMS:
                 alg_name = alg.__class__.__name__
-                cur_coph_sum = None
                 for i, n_graphs in enumerate(N_GRAPHS_LIST): # the number of sampled graphs from the HRG we give algorithm
-                    prev_n_graphs = N_GRAPHS_LIST[i-1] if i > 0 else 0
+                    prev_n_graphs = N_GRAPHS_LIST[i-1] if i > 
                     t0 = time.perf_counter()
-                    nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(graph_size, dend, n_graphs, n_graphs-prev_n_graphs, cur_coph_sum, alg)
+                    nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(graph_size, dend, n_graphs, )
                     elapsed = time.perf_counter() - t0
 
                     record = {

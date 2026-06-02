@@ -10,7 +10,7 @@ from scipy.cluster.hierarchy import dendrogram
 from superalgorithm import SuperAlgorithm
 
 
-class FastGirvanNewman(SuperAlgorithm):
+class EdgeDegreeCentrality(SuperAlgorithm):
     """Girvan-Newman community detection algorithm."""
 
     def run(self, g: ig.Graph) -> list[tuple[int, int]]:
@@ -117,7 +117,7 @@ def cluster_alg(g: ig.Graph) -> list[tuple[int, int]]:
 
 def run(g: ig.Graph) -> list[tuple[int, int]]:
     """Run Girvan-Newman algorithm. Wrapper for backward compatibility."""
-    algo = FastGirvanNewman()
+    algo = EdgeDegreeCentrality()
     return algo.run(g)
 
 

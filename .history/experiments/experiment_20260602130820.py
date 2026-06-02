@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from pyhrg.hrg import Dendrogram
 from algorithms.divisive.girvan_newman import GirvanNewman
-from algorithms.divisive.edge_deg_centrality import EdgeDegreeCentrality
+from algorithms.divisive.fast_GN import FastGirvanNewman
 from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
 from algorithms.agglomerative.cosine_similarity import CosineSimilarity
 from algorithms.agglomerative.linkage import Linkage
@@ -73,18 +73,16 @@ def _merges_to_linkage(merges: list[tuple[int, int]], n: int) -> np.ndarray:
     return np.array(rows, dtype=float)
 
 
-def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_graphs: int, coph_sum, algorithm) -> tuple[float, float]:
+def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, algorithm) -> tuple[float, float]:
     """Run 'algorithm' on 'n_graphs' sampled graphs and compare the average dendrogram to the ground-truth dendrogram.
 
     Returns the nHMI score between the ground-truth merges and the algorithm's averaged dendrogram.
     """
 
     M = dendrogram_to_merges(dend)
-    if coph_sum is None:
-        coph_sum = np.zeros((n_nodes, n_nodes))
-
+    coph_sum = np.zeros((n_nodes, n_nodes))
     optimal_modularities = []
-    for _ in range(additional_n_graphs):
+    for _ in range(n_graphs):
         g_nx = dend.generate_graph()
         g = ig.Graph.from_networkx(g_nx)
     
@@ -101,12 +99,12 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     avg_M = [(int(row[0]), int(row[1])) for row in avg_lm]
     nhmi_score = nhmi(n_nodes, M, avg_M, verbose=False)
     avg_modularity = float(np.mean(optimal_modularities))
-    return nhmi_score, avg_modularity, coph_sum
+    return nhmi_score, avg_modularity
 
 GRAPH_SIZES = [20, 50, 100]#, 500, 1000]
-N_RUNS = 1
-N_GRAPHS_LIST = [10, 20, 50]#, 100]
-ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
+N_RUNS = 2
+N_GRAPHS_LIST = [10, 20]#, 50, 100]
+ALGORITHMS = [GirvanNewman(), FastGirvanNewman(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')
 
@@ -116,17 +114,15 @@ def run_experiment():
     results = []
 
     for graph_size in GRAPH_SIZES:
-        for run_i in range(N_RUNS): # more iterations of the same parameter combination
+        for run_i in range(N_RUNS):
             dend = dendrogram_generator.make_rnd_dendrogram(n=graph_size)
             print(f"graph_size={graph_size}, run={run_i+1}/{N_RUNS}")
 
             for alg in ALGORITHMS:
                 alg_name = alg.__class__.__name__
-                cur_coph_sum = None
-                for i, n_graphs in enumerate(N_GRAPHS_LIST): # the number of sampled graphs from the HRG we give algorithm
-                    prev_n_graphs = N_GRAPHS_LIST[i-1] if i > 0 else 0
+                for n_graphs in N_GRAPHS_LIST: # the number of sampled graphs we give alg 
                     t0 = time.perf_counter()
-                    nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(graph_size, dend, n_graphs, n_graphs-prev_n_graphs, cur_coph_sum, alg)
+                    nhmi_score, avg_modularity = run_and_compare(graph_size, dend, n_graphs, alg)
                     elapsed = time.perf_counter() - t0
 
                     record = {
