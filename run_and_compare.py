@@ -94,7 +94,7 @@ def dendrogram_to_merges(dendrogram) -> list[tuple[int, int]]:
     return merges
 
 
-def run_and_compare(n_dendrograms: int, n_graphs_per_dendrogram: int, n_nodes: int = 20):
+def run_and_compare(n_dendrograms: int, n_graphs_per_dendrogram: int, n_nodes: int):
     """Run all algorithms on sampled graphs and compare their merges to the ground-truth dendrogram.
 
     Args:
@@ -156,4 +156,4 @@ def run_and_compare(n_dendrograms: int, n_graphs_per_dendrogram: int, n_nodes: i
 
 
 if __name__ == "__main__":
-    run_and_compare(n_dendrograms=5, n_graphs_per_dendrogram=20, n_nodes=50)
+    run_and_compare(n_dendrograms=1, n_graphs_per_dendrogram=1, n_nodes=500)
