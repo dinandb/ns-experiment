@@ -1,12 +1,20 @@
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
+import warnings
+
+warnings.filterwarnings(
+    "ignore",
+    message="Graph is not fully connected, spectral embedding may not work as expected."
+)
 from pyhrg.hrg import Dendrogram
 from algorithms.divisive.girvan_newman import GirvanNewman
 from algorithms.divisive.edge_deg_centrality import EdgeDegreeCentrality
 from algorithms.divisive.clust_coef_divisive import ClusteringCoefficientDivisive
 from algorithms.agglomerative.cosine_similarity import CosineSimilarity
+from algorithms.agglomerative.spectral import Spectral
 from algorithms.agglomerative.linkage import Linkage
 from superalgorithm import SuperAlgorithm
 from HMI import nhmi
@@ -103,47 +111,82 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     avg_modularity = float(np.mean(optimal_modularities))
     return nhmi_score, avg_modularity, coph_sum
 
-GRAPH_SIZES = [20, 50, 100]#, 500, 1000]
-N_RUNS = 1
-N_GRAPHS_LIST = [10, 20, 50]#, 100]
-ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage()]
+GRAPH_SIZES = [20, 50, 100, 500]
+N_RUNS = 10
+N_GRAPHS_LIST = [10, 20, 50, 100]
+ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Linkage(), Spectral()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')
 
 
+
+
+def run_single_experiment(graph_size, run_i, alg):
+    dend = dendrogram_generator.make_rnd_dendrogram(n=graph_size)
+    
+    alg_name = alg.__class__.__name__
+    cur_coph_sum = None
+    records = []
+    print(f"graph_size={graph_size}, run={run_i+1}/{N_RUNS}, alg = {alg_name}")
+    for i, n_graphs in enumerate(N_GRAPHS_LIST):
+        prev_n_graphs = N_GRAPHS_LIST[i - 1] if i > 0 else 0
+
+        t0 = time.perf_counter()
+
+        nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(
+            graph_size,
+            dend,
+            n_graphs,
+            n_graphs - prev_n_graphs,
+            cur_coph_sum,
+            alg,
+        )
+
+        elapsed = time.perf_counter() - t0
+
+        records.append({
+            "graph_size": graph_size,
+            "run": run_i,
+            "algorithm": alg_name,
+            "n_graphs": n_graphs,
+            "nhmi_score": nhmi_score,
+            "avg_modularity": avg_modularity,
+            "time_s": elapsed,
+        })
+        print(f"reported  {alg_name} n_graphs={n_graphs}: nhmi={nhmi_score:.4f}, mod={avg_modularity:.4f} ({elapsed:.2f}s)")
+
+    return records
+
+
 def run_experiment():
     os.makedirs(OUT_DIR, exist_ok=True)
-    results = []
 
-    for graph_size in GRAPH_SIZES:
-        for run_i in range(N_RUNS): # more iterations of the same parameter combination
-            dend = dendrogram_generator.make_rnd_dendrogram(n=graph_size)
-            print(f"graph_size={graph_size}, run={run_i+1}/{N_RUNS}")
+    futures = []
 
-            for alg in ALGORITHMS:
-                alg_name = alg.__class__.__name__
-                cur_coph_sum = None
-                for i, n_graphs in enumerate(N_GRAPHS_LIST): # the number of sampled graphs from the HRG we give algorithm
-                    prev_n_graphs = N_GRAPHS_LIST[i-1] if i > 0 else 0
-                    t0 = time.perf_counter()
-                    nhmi_score, avg_modularity, cur_coph_sum = run_and_compare(graph_size, dend, n_graphs, n_graphs-prev_n_graphs, cur_coph_sum, alg)
-                    elapsed = time.perf_counter() - t0
+    with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
 
-                    record = {
-                        "graph_size": graph_size,
-                        "run": run_i,
-                        "algorithm": alg_name,
-                        "n_graphs": n_graphs,
-                        "nhmi_score": nhmi_score,
-                        "avg_modularity": avg_modularity,
-                        "time_s": elapsed,
-                    }
-                    results.append(record)
-                    print(f"  {alg_name} n_graphs={n_graphs}: nhmi={nhmi_score:.4f}, mod={avg_modularity:.4f} ({elapsed:.2f}s)")
+        for graph_size in GRAPH_SIZES:
+            for run_i in range(N_RUNS):
+                for alg in ALGORITHMS:
+                    futures.append(
+                        executor.submit(
+                            run_single_experiment,
+                            graph_size,
+                            run_i,
+                            alg,
+                        )
+                    )
+
+        results = []
+
+        for future in as_completed(futures):
+            results.extend(future.result())
 
     out_path = os.path.join(OUT_DIR, "results.json")
+
     with open(out_path, "w") as f:
         json.dump(results, f, indent=2)
+
     print(f"\nResults written to {out_path}")
 
 

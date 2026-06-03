@@ -8,7 +8,7 @@ from superalgorithm import SuperAlgorithm
 class Linkage(SuperAlgorithm):
     """Agglomerative Linkage community detection algorithm."""
 
-    def run(self, g: ig.Graph, linkage_algorithm='single') -> list[tuple[int, int]]:
+    def run(self, g: ig.Graph, linkage_algorithm='average') -> list[tuple[int, int]]:
         """
         Run Agglomerative Linkage on g and return agglomerative merges compatible with HMI.
 

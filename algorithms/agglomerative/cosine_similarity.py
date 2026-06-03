@@ -7,7 +7,7 @@ from superalgorithm import SuperAlgorithm
 class CosineSimilarity(SuperAlgorithm):
     """Agglomerative community detection based on the cosine similarity of the adjacencent matrix rows"""
 
-    def run(self, g: ig.Graph, linkage_method='single') -> list[tuple[int, int]]:
+    def run(self, g: ig.Graph, linkage_method='average') -> list[tuple[int, int]]:
         adj = np.asarray(g.get_adjacency().data)
         dist = pdist(adj, metric='cosine')
         # NaN is converted to 1.0, the worst possible value.

@@ -7,7 +7,7 @@ from superalgorithm import SuperAlgorithm
 class Spectral(SuperAlgorithm):
     """Agglomerative community detection with spectral embedding."""
 
-    def run(self, g: ig.Graph, linkage_method='single') -> list[tuple[int, int]]:
+    def run(self, g: ig.Graph, linkage_method='average') -> list[tuple[int, int]]:
         adj = np.asarray(g.get_adjacency().data)
         embedding = SpectralEmbedding(n_components=16, affinity='precomputed')
         S = embedding.fit_transform(adj)
