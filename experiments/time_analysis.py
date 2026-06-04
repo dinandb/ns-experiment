@@ -92,6 +92,14 @@ sns.boxplot(
     x="graph_size",
     y="per_graph_time",
     hue="algorithm",
+    hue_order=[
+        "GirvanNewman",
+        "ClusteringCoefficientDivisive",
+        "EdgeDegreeCentrality",
+        "Linkage",
+        "CosineSimilarity",
+        "Spectral",
+    ],
 )
 
 plt.yscale("log")
