@@ -16,7 +16,9 @@ the nHMI paper in the first sentence.
 a footnote that you forgot to remove - maybe you could try
 rephrasing it, or focusing on the parallel aspect rather than the fact
 that you didnt have time to run the experiment for longer.
+
 -remove the note on the warnings or improve it. 
+
 -'community detection' checken in zinnen
 -section structure: 3.1: divisive algemeen, 3.2,3.3,3.4: divsive algs, 3.5: aggl algemeen.
 -bij agglomerative: linkage moet distance worden.
@@ -36,8 +38,6 @@ GROTERE / ALGEMENERE DINGEN
 -cophenetic distance (misschien referen naar paper van newman) & nHMI reference 
 -consistent zijn over verwachtingen (ook bij agglomerative)
 -ook naar terugkoppelen
--rewrite conclusion to interpret the results more.
--literature review: expliciet zeggen dat wij hierarchcial based on dendrogram doen en dat dat nieuw is. -> poses some unique challenge (need dendrogram friendly quality functions -> nhmi)
 
 
 LAGE PRIO
