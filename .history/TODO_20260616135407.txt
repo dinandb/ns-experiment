@@ -1,6 +1,5 @@
 
 RERUN (D):
-clean repo, goeie readme
 What we want to change to the results json file:
 -kijken dat linkage distance heet in programma zodat het in de figuren goed komt
 -volgorde van de algoritmes in alle figuren hetzelfde
@@ -35,9 +34,9 @@ GROTERE / ALGEMENERE DINGEN
     -setup beetje high level als het moet
     -algoritmes higher level houden bv time complexity korter 
 -more in depth discussion of results - why do we see what we see.
--how do results fit in literature (R)
+-how do results fit in literature
 -cophenetic distance (misschien referen naar paper van newman) & nHMI reference 
--consistent zijn over verwachtingen (ook bij agglomerative) 
+-consistent zijn over verwachtingen (ook bij agglomerative)
 -ook naar terugkoppelen
 -rewrite conclusion to interpret the results more.
 -literature review: expliciet zeggen dat wij hierarchcial based on dendrogram doen en dat dat nieuw is. -> poses some unique challenge (need dendrogram friendly quality functions -> nhmi)

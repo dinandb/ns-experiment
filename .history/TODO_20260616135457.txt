@@ -1,6 +1,5 @@
 
 RERUN (D):
-clean repo, goeie readme
 What we want to change to the results json file:
 -kijken dat linkage distance heet in programma zodat het in de figuren goed komt
 -volgorde van de algoritmes in alle figuren hetzelfde
