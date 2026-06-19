@@ -27,5 +27,6 @@ This program is parallelized, but still took about 10 hours to run on our machin
 ## How to run
 
 One can run 'run_and_compare.py' with hardcoded parameters to see a simpler comparison and play around with parameters.
-One can run experiments/experiment.py to reproduce our results. 
+The following should be run from the experiments folder.
+One can run experiment.py to reproduce our results. 
 This program writes to experiments/out/results.json
