@@ -39,7 +39,8 @@ df = pd.DataFrame(data)
 modularity_df = {}
 
 for _, row in df.iterrows():
-    
+    if not isinstance(row.get("optimal_modularities"), list):
+        continue
     algorithm = row["algorithm"]
     graph_size = row["graph_size"]
     modularities = row["optimal_modularities"]

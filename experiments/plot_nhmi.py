@@ -5,7 +5,7 @@ import seaborn as sns
 
 
 
-df = pd.read_json('experiments/out/results.json')
+df = pd.read_json('out/results.json')
 
 # nhmi graph
 plt.figure(figsize=(12,6))
@@ -33,7 +33,7 @@ for algorithm, data in sorted(df.groupby("algorithm"), key=lambda x: algorithm_o
     plt.plot(x, y, label=f"{algorithm}")
 
 plt.legend(loc="upper left")
-plt.savefig('experiments/figures/nhmi_graph.png')
+plt.savefig('figures/nhmi_graph.png')
 plt.close()
 
 
@@ -59,5 +59,5 @@ plt.xlabel("Graph size")
 plt.ylabel("nHMI score")
 plt.title("nHMi score per graph size")
 plt.tight_layout()
-plt.savefig('experiments/figures/nhmi_boxplot.png')
+plt.savefig('figures/nhmi_boxplot.png')
 plt.close()

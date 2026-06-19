@@ -81,7 +81,7 @@ def _merges_to_linkage(merges: list[tuple[int, int]], n: int) -> np.ndarray:
     return np.array(rows, dtype=float)
 
 
-def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_graphs: int, coph_sum, algorithm) -> tuple[float, np.array, np.array, np.array]:
+def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_graphs: int, coph_sum, algorithm) -> tuple[float, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Run 'algorithm' on 'n_graphs' sampled graphs and compare the average dendrogram to the ground-truth dendrogram.
 
     Returns the nHMI score between the ground-truth merges and the algorithm's averaged dendrogram.
@@ -98,9 +98,9 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
     for _ in range(additional_n_graphs):
         g_nx = dend.generate_graph()
         g = ig.Graph.from_networkx(g_nx)
-        no_edges = g.number_edges()
+        no_edges = g.ecount()
         numbers_of_edges.append(no_edges)
-        no_components = g.number_components()
+        no_components = len(g.connected_components())
         numbers_of_conn_comps.append(no_components)
         # hier: analyseer no_edges, no_components, zet in lijst en return
         
@@ -125,7 +125,7 @@ def run_and_compare(n_nodes: int, dend: Dendrogram, n_graphs: int, additional_n_
 
 GRAPH_SIZES = [20, 50, 100, 500]
 N_RUNS = 10
-N_GRAPHS_LIST = [10, 20, 50, 100]
+N_GRAPHS_LIST = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 ALGORITHMS = [GirvanNewman(), EdgeDegreeCentrality(), ClusteringCoefficientDivisive(), CosineSimilarity(), Distance(), Spectral()]
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), 'out')
@@ -144,9 +144,7 @@ def run_single_experiment(graph_size, run_i, alg):
     all_numbers_of_concomps = []
     for i, n_graphs in enumerate(N_GRAPHS_LIST):
         prev_n_graphs = N_GRAPHS_LIST[i - 1] if i > 0 else 0
-
         
-
         nhmi_score, optimal_modularities, elapsed_times, cur_coph_sum, numbers_of_edges, numbers_of_concomps = run_and_compare(
             graph_size,
             dend,
@@ -155,6 +153,7 @@ def run_single_experiment(graph_size, run_i, alg):
             cur_coph_sum,
             alg,
         )
+
         all_numbers_of_edges.extend(numbers_of_edges)
         all_numbers_of_concomps.extend(numbers_of_concomps)
 
@@ -214,10 +213,5 @@ def run_experiment():
 
 
 if __name__ == "__main__":
-    print("fix lines 101,103")
-    print("check how no edges, no concomps is passed around and if it is processed in graph_props_analysis.py well")
-    print("lines 53-59")
-    
-    exit(0)
     run_experiment()
 

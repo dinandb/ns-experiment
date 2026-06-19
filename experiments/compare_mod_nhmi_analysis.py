@@ -24,6 +24,8 @@ from itertools import combinations
 # Index all_data by (alg, graph_size, run) -> {n_graphs: entry}
 entry_index: dict[tuple, dict] = defaultdict(dict)
 for e in all_data:
+    if not isinstance(e.get("algorithm"), str):
+        continue
     key = (e["algorithm"], e["graph_size"], e["run"])
     entry_index[key][e["n_graphs"]] = e
 
@@ -37,7 +39,7 @@ n_graphs = 100
 
 vectors: dict[tuple, np.ndarray] = {}
 for (alg, gs, run), ng_dict in entry_index.items():
-    mod_val  = ng_dict[100]["avg_modularity"]
+    mod_val  = np.mean(ng_dict[n_graphs]["optimal_modularities"])
     nhmi_val = ng_dict[n_graphs]["nhmi_score"]
     vectors[(alg, gs, run)] = np.array([mod_val, nhmi_val])
 
@@ -93,7 +95,7 @@ ax.set_ylabel("mean pairwise Spearman rho  (per run)")
 ax.set_title(f"Algorithm profile similarity by graph size, n_graphs = {n_graphs}")
 
 plt.tight_layout()
-out_path = Path(__file__).parent / "out" / f"compare_mod_nhmi_{n_graphs}.png"
+out_path = Path(__file__).parent / "figures" / f"compare_mod_nhmi_{n_graphs}.png"
 plt.savefig(out_path, dpi=150)
 print(f"\nPlot saved to {out_path}")
 plt.show()

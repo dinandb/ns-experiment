@@ -64,11 +64,14 @@ df = pd.DataFrame(data)
 timings_df = {}
 
 for _, row in df.iterrows():
-
-
+    if not isinstance(row["timings"], list):
+        continue
     algorithm = row["algorithm"]
     graph_size = row["graph_size"]
     timings = row["timings"]
+    print(timings)
+    print(row)
+    
     if (algorithm, graph_size) in timings_df:
         timings_df[(algorithm, graph_size)].extend(timings)
     else:
