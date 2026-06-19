@@ -5,12 +5,12 @@ from scipy.cluster.hierarchy import linkage
 from superalgorithm import SuperAlgorithm
 
 
-class Linkage(SuperAlgorithm):
-    """Agglomerative Linkage community detection algorithm."""
+class Distance(SuperAlgorithm):
+    """Agglomerative graph distance based  community detection algorithm."""
 
     def run(self, g: ig.Graph, linkage_algorithm='average') -> list[tuple[int, int]]:
         """
-        Run Agglomerative Linkage on g and return agglomerative merges compatible with HMI.
+        Run Agglomerative Distance on g and return agglomerative merges compatible with HMI.
 
         Returns a list of (a, b) pairs where leaf node IDs are 0..n-1 and
         internal node k is produced by merge index k - n.
