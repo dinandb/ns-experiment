@@ -6,7 +6,7 @@ Python packages: igraph, numpy, scipy, sklearn, pandas,
 For the HRG implementation, we require the PyHRG library.
 Install with:
 
-pip install git+https://github.com/RensDeWit/PyHRG'
+pip install git+https://github.com/RensDeWit/PyHRG
 
 ## Description of classes
 
