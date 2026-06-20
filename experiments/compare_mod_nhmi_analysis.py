@@ -29,12 +29,7 @@ for e in all_data:
     key = (e["algorithm"], e["graph_size"], e["run"])
     entry_index[key][e["n_graphs"]] = e
 
-# vec{A, n, i} = [avg_mod@10, avg_mod@20, avg_mod@50, avg_mod@100,
-#                 nhmi@10,    nhmi@20,    nhmi@50,    nhmi@100]
-# Concatenating both metrics across all n_graphs gives an 8-element profile.
-# spearmanr(vec_A, vec_B) then measures how consistently algorithm A ranks
-# relative to B across every (metric, n_graphs) combination — high rho means
-# A dominates (or is dominated by) B in the same way for both modularity and nHMI.
+
 n_graphs = 100
 
 vectors: dict[tuple, np.ndarray] = {}
@@ -71,7 +66,8 @@ for gs in graph_sizes:
             ]
 
             rho = spearmanr(mods, nhmis).statistic
-
+            print(mods)
+            print(nhmis)
             print(rho)
             size_run_rhos[gs].append(rho)
 

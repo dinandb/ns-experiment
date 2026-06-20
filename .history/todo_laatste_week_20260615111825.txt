@@ -1,2 +1,0 @@
-analyse over aantal edges in onze gegenereerde grafen. het is erg interessant om te weten of onze grafen in het algemeen sparse of dense zijn
-

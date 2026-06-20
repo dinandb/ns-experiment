@@ -3,3 +3,7 @@ data
 __pycache__
 algorithms/__pycache__
 pictures
+.new_history
+.new_vscode
+.vscode
+.history

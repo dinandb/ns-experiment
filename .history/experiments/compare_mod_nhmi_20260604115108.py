@@ -1,7 +1,0 @@
-
-
-# read out/results.json
-
-# read, for each pair of algorithms A, B, graph_size n, run i:
-    # look at the entries with n_graphs = 100
-    # denote the entry of alg A with 

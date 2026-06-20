@@ -21,7 +21,7 @@ algorithm_order = [
     "CosineSimilarity",
     "Spectral",
 ]
-for algorithm, data in sorted(df.groupby("algorithm"), key=lambda x: algorithm_order.index(x[0])):
+for algorithm, data in sorted(df[df["graph_size"] == 500].groupby("algorithm"), key=lambda x: algorithm_order.index(x[0])):
     x = []
     y = []
     for n_graph, data_per_n_graphs in data.groupby("n_graphs"):
@@ -40,7 +40,7 @@ plt.close()
 #nhmi boxplot
 plt.figure(figsize=(12,6))
 sns.boxplot(
-        data=df,
+        data=df[df["graph_size"] == 500],
         x="n_graphs",
         y="nhmi_score",
         hue="algorithm",
@@ -55,9 +55,9 @@ sns.boxplot(
     )
 
 plt.ylim(0,1)
-plt.xlabel("Graph size")
+plt.xlabel("n_graphs")
 plt.ylabel("nHMI score")
-plt.title("nHMi score per graph size")
+plt.title("nHMi score per n_graphs")
 plt.tight_layout()
 plt.savefig('figures/nhmi_boxplot.png')
 plt.close()

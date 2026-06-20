@@ -1,9 +1,0 @@
-- algoritme gebruiken voor fitten dendogram - R
-- Formats voor structuren - R
-- Implementaties verzamelen - D/J
-- 10 echte netwerken zoeken die we kunnen gebruiken voor HRG fitten - J
-- Functie voor samplen van HRG - R
-- Beginnen met Girvan-Newman kunnen gebruiken - D
-- Input allemaal in dezelfde format krijgen - J
-
-superalgoritme implementeren. mergeslist -> dendrogram
