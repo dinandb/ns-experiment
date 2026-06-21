@@ -50,15 +50,28 @@ for _, row in df.iterrows():
         no_edges_per_graph_size_df[graph_size] = list(list_no_edges)
         no_concomps_per_graph_size_df[graph_size] = list(list_no_concomps)
 
-# print mean no_edges per (run, graph_size)
-print("Mean number of edges per (run, graph_size):")
-for (run, graph_size), vals in sorted(no_edges_per_graph_size_run_df.items()):
-    print(f"  run={run}, graph_size={graph_size}: {sum(vals)/len(vals):.2f}, mean deg = {sum(vals)/graph_size/len(vals):.2f}")
+# collect mean degree per run per graph_size, then report mean ± std across runs
+from collections import defaultdict
+mean_deg_per_graph_size = defaultdict(list)
+mean_concomps_per_graph_size = defaultdict(list)
+for (run, graph_size), vals in no_edges_per_graph_size_run_df.items():
+    mean_deg_per_graph_size[graph_size].append(sum(vals) / len(vals) / graph_size)
+for (run, graph_size), vals in no_concomps_per_graph_size_run_df.items():
+    mean_concomps_per_graph_size[graph_size].append(sum(vals) / len(vals))
 
-# print mean no_concomps per (run, graph_size)
-print("\nMean number of connected components per (run, graph_size):")
-for (run, graph_size), vals in sorted(no_concomps_per_graph_size_run_df.items()):
-    print(f"  run={run}, graph_size={graph_size}: {sum(vals)/len(vals):.2f}")
+print("Mean degree per graph_size (mean ± std across runs):")
+for graph_size in sorted(mean_deg_per_graph_size):
+    run_means = mean_deg_per_graph_size[graph_size]
+    m = sum(run_means) / len(run_means)
+    s = (sum((v - m)**2 for v in run_means) / len(run_means))**0.5
+    print(f"  graph_size={graph_size}: mean deg = {m:.4f} ± {s:.4f}")
+
+print("\nMean connected components per graph_size (mean ± std across runs):")
+for graph_size in sorted(mean_concomps_per_graph_size):
+    run_means = mean_concomps_per_graph_size[graph_size]
+    m = sum(run_means) / len(run_means)
+    s = (sum((v - m)**2 for v in run_means) / len(run_means))**0.5
+    print(f"  graph_size={graph_size}: mean concomps = {m:.4f} ± {s:.4f}")
 
 # boxplot of no_edges per graph_size
 pandas_edges_df = pd.DataFrame([
