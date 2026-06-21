@@ -1,12 +1,14 @@
+# README
+
 ## Requirements
 
-Python 3.8+
-Python packages: igraph, numpy, scipy, sklearn, pandas, 
+Tested with Python 3.13 and 3.14.
+Python packages: igraph, numpy, scipy, sklearn, pandas,
 
 For the HRG implementation, we require the PyHRG library.
 Install with:
 
-pip install git+https://github.com/RensDeWit/PyHRG'
+`pip install git+https://github.com/RensDeWit/PyHRG`
 
 ## Description of classes
 
@@ -21,12 +23,12 @@ superalgorithm.py is the superclass that all algorithms implement. It has functi
 In the algorithms folder, we provide the implementations of the benchmarked algorithms. They are all subclasses of the SuperAlgorithm.
 
 In the experiments folder, we provide our programs that we used in the statistical analysis and when plotting our results.
-experiment.py contains the main experiment that we ran. 
+experiment.py contains the main experiment that we ran.
 This program is parallelized, but still took about 10 hours to run on our machine.
 
 ## How to run
 
 One can run 'run_and_compare.py' with hardcoded parameters to see a simpler comparison and play around with parameters.
 The following should be run from the experiments folder.
-One can run experiment.py to reproduce our results. 
+One can run experiment.py to reproduce our results.
 This program writes to experiments/out/results.json
